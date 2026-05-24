@@ -1,4 +1,3 @@
-```markdown id="dh3v6m"
 # Dataset Description
 
 This project uses three datasets: one large-scale training dataset and two independent testing datasets for evaluating robustness and generalization under real-world conditions.
@@ -112,4 +111,3 @@ This dataset is used to evaluate out-of-distribution generalization under practi
 - All experiments were conducted using YOLO-format annotations.
 - Images were resized to `640×640` during preprocessing.
 - Dataset-C is not publicly released due to collection and privacy considerations.
-```
