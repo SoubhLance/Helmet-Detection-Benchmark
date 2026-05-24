@@ -1,0 +1,27 @@
+# Deep Learning Framework
+torch==2.1.0
+torchvision==0.16.0
+ultralytics==8.2.0
+
+# CUDA Libraries (for RTX 4060)
+# Note: Install PyTorch with CUDA 12.1 first:
+# pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+
+# Data Processing & Visualization
+numpy==1.24.3
+pandas==2.0.3
+opencv-python==4.8.1.78
+matplotlib==3.7.2
+seaborn==0.13.0
+Pillow==10.0.0
+
+# Utilities
+tqdm==4.66.1
+pyyaml==6.0.1
+scipy==1.11.2
+ipython==8.14.0
+jupyter==1.0.0
+
+# Optional but useful
+tensorboard==2.14.0
+thop==0.1.1  # For FLOPs calculation
