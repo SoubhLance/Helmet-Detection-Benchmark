@@ -1,0 +1,288 @@
+# Helmet Detection using YOLOv8 with Advanced Attention Mechanisms
+
+[![Python 3.10](https://img.shields.io/badge/Python-3.10-blue.svg)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
+[![Ultralytics](https://img.shields.io/badge/Ultralytics-YOLOv8-00FFFF.svg)](https://ultralytics.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![CUDA](https://img.shields.io/badge/CUDA-12.1-green.svg)](https://developer.nvidia.com/cuda-toolkit)
+
+> **Real-time helmet and non-helmet detection using YOLOv8 with 6 different attention mechanisms including CBAM, SimAM, PA-CBAM, Scale-Adaptive CBAM, and Hybrid approaches.**
+
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Models Implemented](#models-implemented)
+- [Architecture](#architecture)
+- [Dataset](#dataset)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Results](#results)
+- [Qualitative Analysis](#qualitative-analysis)
+- [Citation](#citation)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
+
+## Overview
+
+This repository presents a comprehensive study of attention mechanisms integrated with YOLOv8 for helmet detection in surveillance and construction safety applications. We evaluate six different attention modules:
+
+- **Baseline YOLOv8n**: Standard YOLOv8 nano without attention
+- **CBAM (Convolutional Block Attention Module)**: Sequential channel and spatial attention
+- **PA-CBAM (Position-Aware CBAM)**: CBAM with coordinate encoding
+- **Scale-Adaptive CBAM**: Dynamic reduction ratio based on channel depth
+- **SimAM (Simple Parameter-Free Attention Module)**: Zero-parameter attention
+- **CBAM+SimAM Hybrid**: Combined attention approach
+
+All models are trained on a diverse helmet detection dataset and evaluated on metrics including mAP50, mAP50-95, precision, and recall.
+
+## Features
+
+- 🚀 **6 Different Attention Mechanisms** - Compare and analyze various attention approaches
+- 📊 **Comprehensive Evaluation** - Detailed metrics and visualization for each model
+- 🎨 **Architecture Diagrams** - Clear visualization of each attention module
+- 🖼️ **Qualitative Results** - Side-by-side comparison of detection outputs
+- 💻 **Local Training Ready** - Optimized for RTX 4060 GPU with CUDA 12.1
+- 🔄 **Easy Model Switching** - Modular design for quick experimentation
+- 📈 **Training Logs** - Automatic saving of metrics, graphs, and checkpoints
+
+## Models Implemented
+
+| Model | Attention Type | Parameters | Key Features | Best mAP50 |
+|-------|---------------|------------|--------------|------------|
+| **Baseline** | None | 3.01M | Standard YOLOv8n | - |
+| **CBAM** | Channel + Spatial | 3.03M | Reduction ratio 16 | - |
+| **PA-CBAM** | Position-Aware | 3.03M | Coordinate encoding | - |
+| **Scale-Adaptive CBAM** | Dynamic Reduction | 3.03M | Adaptive ratios (4/8/12/16) | - |
+| **SimAM** | Parameter-Free | 3.01M | Zero learnable params | - |
+| **CBAM+SimAM** | Hybrid | 3.03M | Combined approach | - |
+
+## Architecture
+
+### Attention Mechanism Visualizations
+
+#### CBAM (Convolutional Block Attention Module)
+![CBAM Architecture](figures/cbam.png)
+*CBAM sequentially applies channel and spatial attention*
+
+#### SimAM (Simple Parameter-Free Attention Module)
+![SimAM Architecture](figures/simam.png)
+*Energy-based neuron-level attention with zero parameters*
+
+#### Overall Model Architecture
+![Overall Architecture](figures/architecture.png)
+*YOLOv8 backbone with integrated attention modules*
+
+## Dataset
+
+We use the **Helmet Detection Dataset** from Kaggle, containing:
+- **17,248** training images
+- **2,438** validation images
+- **2** classes: `helmet` and `non-helmet`
+- Diverse scenarios including construction sites, factories, and roads
+
+[Download Dataset](https://www.kaggle.com/datasets/octophobia/helmet-detection-dataset)
+
+## Installation
+
+### Prerequisites
+- Python 3.10+
+- NVIDIA GPU with CUDA 12.1 (RTX 4060 or higher recommended)
+- 16GB+ RAM
+- 50GB+ storage space
+
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/yourusername/Helmet-Detection-YOLOv8.git
+cd Helmet-Detection-YOLOv8
+```
+
+### Step 2: Create Virtual Environment
+```bash
+python3.10 -m venv yolov8_env
+source yolov8_env/bin/activate  # On Windows: yolov8_env\Scripts\activate
+```
+
+### Step 3: Install PyTorch with CUDA Support
+```bash
+# For RTX 4060 (CUDA 12.1)
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu121 
+```
+
+### Step 4: Install Dependencies
+```bash
+pip install -r requirements.txt 
+```
+
+### Step 5: Verify Installation
+```bash
+python -c "import torch; print(f'CUDA Available: {torch.cuda.is_available()}'); print(f'GPU: {torch.cuda.get_device_name(0)}')" 
+```
+
+## Usage
+### Directory Structure Setup
+```bash
+# Update dataset path in each notebook
+DATASET = "path/to/your/helmet-detection-dataset/archive7_extracted"
+```
+
+````markdown
+## Training Models
+
+### 1. Baseline YOLOv8n
+
+```bash
+jupyter notebook models/baseline.ipynb
+````
+
+### 2. CBAM with 3 Layers
+
+```bash
+jupyter notebook models/cbam_3layer.ipynb
+```
+
+### 3. Position-Aware CBAM (PA-CBAM)
+
+```bash
+jupyter notebook models/pacbam.ipynb
+```
+
+### 4. Scale-Adaptive CBAM
+
+```bash
+jupyter notebook models/scale_adaptive_cbam.ipynb
+```
+
+### 5. SimAM (3 Layers)
+
+```bash
+jupyter notebook models/simam_3layer.ipynb
+```
+
+### 6. CBAM + SimAM Hybrid
+
+```bash
+jupyter notebook models/cbam_simam.ipynb
+```
+
+---
+
+# Training Configuration
+
+All models use the following training parameters:
+
+* Epochs: 100
+* Batch Size: 16
+* Image Size: 640×640
+* Optimizer: SGD (`lr=0.01`, `momentum=0.937`)
+* AMP: True (Mixed Precision)
+* Patience: 50 (early stopping)
+* Workers: 2
+
+---
+
+# Output Structure
+
+Each training run saves results to:
+
+```text
+runs/{model_name}/
+├── weights/
+│   ├── best.pt
+│   └── last.pt
+├── results.png
+├── confusion_matrix.png
+├── labels.jpg
+└── args.yaml
+```
+
+* `best.pt` — Best model checkpoint
+* `last.pt` — Final epoch checkpoint
+* `results.png` — Training curves
+* `confusion_matrix.png` — Confusion matrix
+* `labels.jpg` — Dataset labels visualization
+* `args.yaml` — Training arguments
+
+---
+
+# Results
+
+## Quantitative Results
+
+| Model               | Precision | Recall | mAP50 | mAP50-95 | Inference Time (ms) |
+| ------------------- | --------- | ------ | ----- | -------- | ------------------- |
+| Baseline            | -         | -      | -     | -        | -                   |
+| CBAM                | -         | -      | -     | -        | -                   |
+| PA-CBAM             | -         | -      | -     | -        | -                   |
+| Scale-Adaptive CBAM | -         | -      | -     | -        | -                   |
+| SimAM               | -         | -      | -     | -        | -                   |
+| CBAM+SimAM          | -         | -      | -     | -        | -                   |
+
+> Note: Results will be populated after training completion.
+
+---
+
+## Class-wise Performance (Best Model)
+
+| Class      | Precision | Recall | mAP50 | mAP50-95 |
+| ---------- | --------- | ------ | ----- | -------- |
+| Helmet     | -         | -      | -     | -        |
+| Non-Helmet | -         | -      | -     | -        |
+
+---
+
+# Qualitative Results
+
+```text
+figures/qualitative_results.png
+```
+
+Detection results comparison across different attention mechanisms.
+
+---
+
+# Citation
+
+If you use this work in your research, please cite:
+
+```bibtex
+@software{helmet_detection_yolov8,
+  author = {Your Name},
+  title = {Helmet Detection using YOLOv8 with Advanced Attention Mechanisms},
+  year = {2024},
+  url = {https://github.com/yourusername/Helmet-Detection-YOLOv8},
+  version = {1.0.0}
+}
+```
+
+---
+
+# License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+# Acknowledgments
+
+* Ultralytics YOLOv8 — Object detection framework
+* CBAM Paper — Convolutional Block Attention Module
+* SimAM Paper — Simple Parameter-Free Attention Module
+* Kaggle Helmet Dataset — Dataset provider
+
+---
+
+# Contact
+
+For questions or collaborations, please open an issue or contact:
+
+* Email: [your.email@example.com](mailto:your.email@example.com)
+* GitHub: @SoubhLance
+
+---
+
+# Star History
+
+If you find this repository useful, please consider giving it a star.
+
+```
+```
