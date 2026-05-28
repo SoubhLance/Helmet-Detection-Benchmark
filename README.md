@@ -276,7 +276,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 For questions or collaborations, please open an issue or contact:
 
 * Email: [your.email@example.com](mailto:your.email@example.com)
-* GitHub: @SoubhLance
+* GitHub: @SoubhLance, devlance492, Soumyajit-here
 
 ---
 
