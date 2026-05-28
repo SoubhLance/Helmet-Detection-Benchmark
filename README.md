@@ -61,11 +61,13 @@ All models are trained on a diverse helmet detection dataset and evaluated on me
 ### Attention Mechanism Visualizations
 
 #### CBAM (Convolutional Block Attention Module)
-![CBAM Architecture](figures/cbam.png)
+<img width="599" height="851" alt="CBAM3Layer" src="https://github.com/user-attachments/assets/3be193c1-aea5-48a0-bb0a-09ab9e4c05b6" />
+
 *CBAM sequentially applies channel and spatial attention*
 
 #### SimAM (Simple Parameter-Free Attention Module)
-![SimAM Architecture](figures/simam.png)
+<img width="683" height="1080" alt="YOLOv8n + SimAM Architecture" src="https://github.com/user-attachments/assets/b98e42cd-886c-4ab0-9ed7-d6444ea0668a" />
+
 *Energy-based neuron-level attention with zero parameters*
 
 #### Overall Model Architecture
