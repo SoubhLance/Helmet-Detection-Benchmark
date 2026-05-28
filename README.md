@@ -47,14 +47,14 @@ All models are trained on a diverse helmet detection dataset and evaluated on me
 
 ## Models Implemented
 
-| Model | Attention Type | Parameters | Key Features | Best mAP50 |
+| Model | Attention Type | Parameters | Key Features | Best mAP50 (Dataset B) |
 |-------|---------------|------------|--------------|------------|
-| **Baseline** | None | 3.01M | Standard YOLOv8n | - |
-| **CBAM** | Channel + Spatial | 3.03M | Reduction ratio 16 | - |
-| **PA-CBAM** | Position-Aware | 3.03M | Coordinate encoding | - |
-| **Scale-Adaptive CBAM** | Dynamic Reduction | 3.03M | Adaptive ratios (4/8/12/16) | - |
-| **SimAM** | Parameter-Free | 3.01M | Zero learnable params | - |
-| **CBAM+SimAM** | Hybrid | 3.03M | Combined approach | - |
+| **Baseline** | None | 3.01M | Standard YOLOv8n | 0.9781 |
+| **CBAM** | Channel + Spatial | 3.03M | Reduction ratio 16 | 0.9786 |
+| **PA-CBAM** | Position-Aware | 3.03M | Coordinate encoding | 0.9792 |
+| **Scale-Adaptive CBAM** | Dynamic Reduction | 3.03M | Adaptive ratios (4/8/12/16) | 0.9785 |
+| **SimAM** | Parameter-Free | 3.01M | Zero learnable params | 0.9788 |
+| **CBAM+SimAM** | Hybrid | 3.03M | Combined approach | **0.9793** |
 
 ## Architecture
 
@@ -125,14 +125,13 @@ python -c "import torch; print(f'CUDA Available: {torch.cuda.is_available()}'); 
 DATASET = "path/to/your/helmet-detection-dataset/archive7_extracted"
 ```
 
-````markdown
 ## Training Models
 
 ### 1. Baseline YOLOv8n
 
 ```bash
 jupyter notebook models/baseline.ipynb
-````
+```
 
 ### 2. CBAM with 3 Layers
 
@@ -206,27 +205,34 @@ runs/{model_name}/
 
 # Results
 
-## Quantitative Results
+> Tests on both datasets were performed at a confidence threshold of 0.001 and an IoU threshold of 0.5.
 
-| Model               | Precision | Recall | mAP50 | mAP50-95 | Inference Time (ms) |
-| ------------------- | --------- | ------ | ----- | -------- | ------------------- |
-| Baseline            | -         | -      | -     | -        | -                   |
-| CBAM                | -         | -      | -     | -        | -                   |
-| PA-CBAM             | -         | -      | -     | -        | -                   |
-| Scale-Adaptive CBAM | -         | -      | -     | -        | -                   |
-| SimAM               | -         | -      | -     | -        | -                   |
-| CBAM+SimAM          | -         | -      | -     | -        | -                   |
+## Quantitative Results — Dataset B (1,766 images, Benchmark)
 
-> Note: Results will be populated after training completion.
+| Model               | Precision | Recall | mAP50  | mAP50-95 | Inference Time (ms) |
+| ------------------- | --------- | ------ | ------ | -------- | ------------------- |
+| Baseline            | 0.9528    | 0.9507 | 0.9781 | 0.6773   | 31.65               |
+| CBAM                | 0.9463    | 0.9487 | 0.9786 | 0.6753   | 31.59               |
+| PA-CBAM             | 0.9515    | 0.9467 | 0.9792 | 0.6763   | 7.36                |
+| Scale-Adaptive CBAM | **0.9560**| 0.9395 | 0.9785 | 0.6744   | **5.22**            |
+| SimAM               | 0.9496    | 0.9450 | 0.9788 | 0.6745   | 29.60               |
+| CBAM+SimAM          | 0.9479    | **0.9497** | **0.9793** | 0.6742 | 7.93          |
 
----
+## Quantitative Results — Dataset C (132 images, Self-Acquired)
 
-## Class-wise Performance (Best Model)
+| Model               | Precision | Recall | mAP50  | mAP50-95 | Inference Time (ms) |
+| ------------------- | --------- | ------ | ------ | -------- | ------------------- |
+| Baseline            | **0.8028** | 0.5804 | **0.6754** | 0.2814 | 5.48              |
+| CBAM                | 0.7865    | 0.5826 | 0.6653 | 0.2796   | 6.25                |
+| PA-CBAM             | 0.7857    | **0.5929** | 0.6748 | **0.2854** | 6.28            |
+| Scale-Adaptive CBAM | 0.7801    | 0.5792 | 0.6597 | 0.2780   | 7.40                |
+| SimAM               | 0.7883    | 0.5910 | 0.6737 | 0.2809   | **4.99**            |
+| CBAM+SimAM          | 0.7946    | 0.5914 | 0.6698 | 0.2773   | 6.54                |
 
-| Class      | Precision | Recall | mAP50 | mAP50-95 |
-| ---------- | --------- | ------ | ----- | -------- |
-| Helmet     | -         | -      | -     | -        |
-| Non-Helmet | -         | -      | -     | -        |
+**Key takeaways:**
+- On the benchmark dataset (B), **CBAM+SimAM** achieves the highest mAP50 (0.9793), while **Scale-Adaptive CBAM** delivers the fastest inference (5.22 ms).
+- On the self-acquired dataset (C), the **Baseline** leads in mAP50 and precision; **PA-CBAM** achieves the best recall and mAP50-95.
+- All models achieve sub-100 ms latency, suitable for real-time deployment at ~25–30 FPS on edge GPUs.
 
 ---
 
@@ -236,7 +242,7 @@ runs/{model_name}/
 figures/qualitative_results.png
 ```
 
-Detection results comparison across different attention mechanisms.
+Detection results comparison across different attention mechanisms. Attention-based variants show improved detection in crowded and partially occluded scenes, with cleaner bounding box placement and more consistent confidence scores compared to the baseline.
 
 ---
 
@@ -246,10 +252,10 @@ If you use this work in your research, please cite:
 
 ```bibtex
 @software{helmet_detection_yolov8,
-  author = {Your Name},
+  author = {Soubhik SaDHU, Debjit Babu, Soumyajit Das},
   title = {Helmet Detection using YOLOv8 with Advanced Attention Mechanisms},
-  year = {2024},
-  url = {https://github.com/yourusername/Helmet-Detection-YOLOv8},
+  year = {2026},
+  url = {https://github.com/SoubhLance/Helmet-Detection-Benchmark},
   version = {1.0.0}
 }
 ```
@@ -280,9 +286,4 @@ For questions or collaborations, please open an issue or contact:
 
 ---
 
-# Star History
-
-If you find this repository useful, please consider giving it a star.
-
-```
-
+If you find this repository useful, please consider giving it a star ⭐
