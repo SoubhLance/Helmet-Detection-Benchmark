@@ -71,7 +71,8 @@ All models are trained on a diverse helmet detection dataset and evaluated on me
 *Energy-based neuron-level attention with zero parameters*
 
 #### Overall Model Architecture
-![Overall Architecture](figures/architecture.png)
+<img width="5400" height="3692" alt="&#39;Sime Attention Modules" src="https://github.com/user-attachments/assets/e1b2d184-7831-4d5f-bc3e-cd2b1835c57d" />
+
 *YOLOv8 backbone with integrated attention modules*
 
 ## Dataset
